@@ -1,10 +1,10 @@
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import BlogListScreen from "./src/screens/BlogListScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <BlogListScreen />
+      <AppNavigator />
     </SafeAreaProvider>
   );
 }

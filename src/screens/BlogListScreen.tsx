@@ -1,13 +1,17 @@
 import { useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { BlogCard } from "../components/BlogCard";
 import { FilterTabs } from "../components/FilterTabs";
 import { useBlogs } from "../hooks/useBlogs";
 import { BlogTopic } from "../types/blog";
+import { RootStackParamList } from "../navigation/AppNavigator";
 
-export default function BlogListScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, "BlogList">;
+
+export default function BlogListScreen({ navigation }: Props) {
   const { blogs, isLoading, error } = useBlogs();
   const [selectedTopic, setSelectedTopic] = useState<BlogTopic>("All Articles");
 
@@ -45,7 +49,12 @@ export default function BlogListScreen() {
       <FlatList
         data={filteredBlogs}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <BlogCard blog={item} />}
+        renderItem={({ item }) => (
+          <BlogCard
+            blog={item}
+            onPress={() => navigation.navigate("BlogDetail", { blog: item })}
+          />
+        )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
@@ -66,11 +75,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 28,
     fontWeight: "700",
-
-    lineHeight: 39.2, // 28 * 1.4 (140%)
-
+    lineHeight: 39.2,
     color: "#3A3036",
-
     marginLeft: 16,
     marginTop: 16,
     marginBottom: 24,
